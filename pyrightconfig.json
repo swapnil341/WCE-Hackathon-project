@@ -1,0 +1,23 @@
+{
+  "venvPath": "e:/wce",
+  "venv": "myenv",
+  "pythonVersion": "3.12",
+  "typeCheckingMode": "basic",
+  "reportMissingImports": false,
+  "reportUnknownVariableType": false,
+  "reportUnknownMemberType": false,
+  "reportUnknownArgumentType": false,
+  "reportUnknownParameterType": false,
+  "reportConstantRedefinition": false,
+  "reportMissingTypeStubs": false,
+  "reportImplicitRelativeImport": "none",
+  "include": [
+    "."
+  ],
+  "executionEnvironments": [
+    {
+      "root": ".",
+      "extraPaths": [".", "src"]
+    }
+  ]
+}

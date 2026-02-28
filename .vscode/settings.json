@@ -1,0 +1,15 @@
+{
+  "python.pythonPath": "e:\\wce\\myenv\\Scripts\\python.exe",
+  "python.defaultInterpreterPath": "e:\\wce\\myenv\\Scripts\\python.exe",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}"
+  ],
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.reportMissingImports": false,
+  "python.analysis.reportMissingTypeStubs": false,
+  "python.analysis.reportUnknownVariableType": false,
+  "python.analysis.reportUnknownMemberType": false,
+  "python.analysis.reportUnknownArgumentType": false,
+  "python.analysis.reportConstantRedefinition": false,
+  "python.analysis.reportImplicitRelativeImport": "none"
+}

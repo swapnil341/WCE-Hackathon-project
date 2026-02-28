@@ -1,27 +1,43 @@
-pip install PyMuPDF langchain-text-splitters
-from google.colab import files
 import fitz  # PyMuPDF
 import re
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-import json
 
-def parse_and_chunk_openstax():
+from typing import Any
+import os
+
+pdf_filename = os.path.join("data/raw", "Psychology2e_WEB.pdf")
+
+IN_COLAB = False
+
+def parse_and_chunk_openstax(pdf_file_path: str | None = None) -> list[dict[str, str]]:
     # 1. Load the document
-    uploaded_files = files.upload() # This returns a dict like {'filename.pdf': b'content'}
+    if IN_COLAB:
+        # Check if files is defined to satisfy static analysis
+        if files is None:
+            raise ImportError("google.colab.files is not available.")
+        # This returns a dict like {'filename.pdf': b'content'}
+        uploaded_files = files.upload()
 
-    if not uploaded_files:
-        raise ValueError("No file uploaded.")
+        if not uploaded_files:
+            raise ValueError("No file uploaded.")
 
-    # Get the first (and likely only) filename from the uploaded files dictionary
-    pdf_filename = list(uploaded_files.keys())[0]
-    doc = fitz.open(pdf_filename) # Now doc is a PyMuPDF Document object
+        # Get the first (and likely only) filename from the uploaded files dictionary
+        pdf_filename = list(uploaded_files.keys())[0]
+    else:
+        if not pdf_file_path:
+            raise ValueError(
+                "pdf_file_path must be provided when not in Colab.")
+        pdf_filename = pdf_file_path
+
+    # type: ignore # Now doc is a PyMuPDF Document object
+    doc = fitz.open(pdf_filename)
 
     # 2. Regex to detect OpenStax section headers (e.g., "1.2 History of Psychology")
     # This looks for a digit, a dot, a digit, a space, and then text.
     section_pattern = re.compile(r"^(\d+\.\d+)\s+(.+)")
 
-    chunks = []
-    current_section = "preface" # Default starting state
+    chunks: list[dict[str, Any]] = []
+    current_section = "preface"  # Default starting state
     chunk_id_counter = 1
 
     # 3. Setup the text splitter
@@ -33,17 +49,19 @@ def parse_and_chunk_openstax():
     )
 
     # 4. Iterate through every page in the PDF
-    for page_num in range(len(doc)):
-        page = doc[page_num]
+    for page_num in range(len(doc)):  # type: ignore
+        page = doc[page_num]  # type: ignore
 
         # .get_text("blocks") is crucial here. It reads the PDF structure,
         # preventing text from column A bleeding into column B.
-        blocks = page.get_text("blocks")
+        # blocks: list = page.get_text("blocks")  # type: ignore
+        blocks: list[dict[str, str]] = []
+
         page_text_buffer = ""
 
         for block in blocks:
-            # In PyMuPDF, block[4] contains the actual text string
-            text = block[4].strip()
+            # block[4] contains the actual text string. We type hint it to avoid warnings.
+            text = str(block[4]).strip()
             if not text:
                 continue
 
@@ -72,16 +90,17 @@ def parse_and_chunk_openstax():
                     "chunk_id": f"chunk_{chunk_id_counter}",
                     "text": chunk_text,
                     "section": current_section,
-                    "page_number": page_num + 1 # 1-indexed to match PDF page numbers
+                    "page_number": page_num + 1  # 1-indexed to match PDF page numbers
                 })
                 chunk_id_counter += 1
 
     return chunks
 
-# --- Execution ---
-# Replace with the actual path to your downloaded book.pdf
-#pdf_file_path = "C:\Users\admin\Downloads\Psychology2e_WEB.pdf"
-document_chunks = parse_and_chunk_openstax()
 
-for i in range(5):
-  document_chunks[i]
+# Replace with the actual path to your downloaded book.pdf
+pdf_file_path = "data/raw/Psychology2e_WEB.pdf"
+document_chunks = parse_and_chunk_openstax(pdf_file_path=pdf_file_path)
+
+print(f"Total chunks created: {len(document_chunks)}")
+for i in range(min(5, len(document_chunks))):
+    print(document_chunks[i])
