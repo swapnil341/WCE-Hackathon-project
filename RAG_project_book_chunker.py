@@ -1,17 +1,15 @@
-try:
-    from google.colab import files  # type: ignore
-    IN_COLAB = True
-except ImportError:
-    IN_COLAB = False
-    files = None
 import fitz  # PyMuPDF
 import re
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-import json
+
 from typing import Any
+import os
 
+pdf_filename = os.path.join("data/raw", "Psychology2e_WEB.pdf")
 
-def parse_and_chunk_openstax(pdf_file_path: str | None = None) -> list[dict[str, Any]]:
+IN_COLAB = False
+
+def parse_and_chunk_openstax(pdf_file_path: str | None = None) -> list[dict[str, str]]:
     # 1. Load the document
     if IN_COLAB:
         # Check if files is defined to satisfy static analysis
@@ -56,7 +54,9 @@ def parse_and_chunk_openstax(pdf_file_path: str | None = None) -> list[dict[str,
 
         # .get_text("blocks") is crucial here. It reads the PDF structure,
         # preventing text from column A bleeding into column B.
-        blocks: list = page.get_text("blocks")  # type: ignore
+        # blocks: list = page.get_text("blocks")  # type: ignore
+        blocks: list[dict[str, str]] = []
+
         page_text_buffer = ""
 
         for block in blocks:

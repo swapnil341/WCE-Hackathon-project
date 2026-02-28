@@ -10,5 +10,6 @@
   "python.analysis.reportUnknownVariableType": false,
   "python.analysis.reportUnknownMemberType": false,
   "python.analysis.reportUnknownArgumentType": false,
-  "python.analysis.reportConstantRedefinition": false
+  "python.analysis.reportConstantRedefinition": false,
+  "python.analysis.reportImplicitRelativeImport": "none"
 }

@@ -10,14 +10,14 @@
   "reportUnknownParameterType": false,
   "reportConstantRedefinition": false,
   "reportMissingTypeStubs": false,
-  "reportImplicitRelativeImport": false,
+  "reportImplicitRelativeImport": "none",
   "include": [
     "."
   ],
   "executionEnvironments": [
     {
       "root": ".",
-      "extraPaths": ["."]
+      "extraPaths": [".", "src"]
     }
   ]
 }
