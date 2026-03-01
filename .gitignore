@@ -12,3 +12,16 @@ __pycache__/
 
 # OS files
 .DS_Store
+
+# Virtual Environment
+myenv/
+
+# Data and Vector DB
+data/processed/
+data/vectorstore/
+
+# Secrets
+.env
+
+# Streamlit
+.streamlit/
