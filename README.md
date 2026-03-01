@@ -1,6 +1,6 @@
-# Psychology RAG Assistant 
+# RAG Assistant for Intelligent Document Question Answering
 
-This project implements a strictly-grounded Retrieval-Augmented Generation (RAG) pipeline over the OpenStax Psychology textbook. It is built to ensure zero hallucinations by strictly answering from the retrieved context and providing page, section, and chunk hash citations for every answer.
+This project implements a Retrieval-Augmented Generation (RAG) pipeline over the OpenStax Psychology textbook. It is built to ensure zero hallucinations by answering from the retrieved context and providing page, section, and chunk hash citations for every answer.
 
 ##  Architecture OVERVIEW
 
@@ -37,6 +37,16 @@ The pipeline is split into three main phases:
 - **Types & Linting:** Strictly typed with `basedpyright`/`pylance`
 
 ---
+
+## 📊 Output Screenshot
+
+![Model Output](images/rag1.png)
+
+![Model Output](images/rag2.png)
+
+
+
+
 
 ## Getting Started
 
